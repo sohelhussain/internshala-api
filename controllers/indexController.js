@@ -1,6 +1,7 @@
 const { catchAsyncError } = require("../middlewares/catchAsyncErrors");
 const studentModel = require("../models/studentModel");
 const ErrorHandler = require("../utils/ErrorHandler");
+const { sendtoken } = require("../utils/sendToken");
 
 exports.homePage = catchAsyncError(async (req, res) => {
   res.json({ message: "this is homePage test" });
@@ -12,7 +13,7 @@ exports.studentSignup = catchAsyncError(async (req, res) => {
   //     packageName: req.body.password,
   //   });
   const student = await new studentModel(req.body).save();
-  res.json({ message: "user are signed up" });
+  sendtoken(student, 201, res);
 });
 
 exports.studentSignin = catchAsyncError(async (req, res) => {
@@ -23,7 +24,7 @@ exports.studentSignin = catchAsyncError(async (req, res) => {
     );
   const isMatch = student.comparePassword(req.body.password);
   if (!isMatch) return next(new ErrorHandler("wrong password", 404));
-  res.json(student);
+  sendtoken(student, 201, res);
 });
 
 // exports.studentSignout = catchAsyncError(async (req, res) => {});
