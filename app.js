@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const indexRouter = require("./router/indexRouter");
 const app = express();
+const expressSession = require("express-session");
+const cookieParser = require("cookie-parser");
 require('./models/database').connectDatabase();
 
 //logger
@@ -13,8 +15,20 @@ app.use(logger("short"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//session and cookies
+app.use(express.session({
+  resave: true,
+  saveUninitialized: true,
+  secret: process.env.SESSION_SECRET
+}))
+
+app.use(cookieParser());
+
+
 const { generatedError } = require("./middlewares/error");
 
+
+//routes
 app.use("/", indexRouter);
 app.all("*", (req, res, next) => {
   next(new ErrorHandler(`request url not found: ${req.url}`), 404);
