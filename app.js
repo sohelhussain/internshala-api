@@ -9,14 +9,14 @@ require('./models/database').connectDatabase();
 //logger
 const logger = require("morgan");
 const ErrorHandler = require("./utils/ErrorHandler");
-app.use(logger("short"));
+app.use(logger("short"));  
 
 // bodyparser 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //session and cookies
-app.use(express.session({
+app.use(expressSession({
   resave: true,
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET
