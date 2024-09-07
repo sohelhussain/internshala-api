@@ -1,4 +1,4 @@
 exports.sendtoken = (student, statusCode, res) => {
-    const token = user.getjwttoken();
-    res.json({token})
+    const token = student.getjwttoken();
+    res.json({token});
 }

@@ -27,4 +27,9 @@ exports.studentSignin = catchAsyncError(async (req, res) => {
   sendtoken(student, 201, res);
 });
 
-// exports.studentSignout = catchAsyncError(async (req, res) => {});
+exports.studentSignout = catchAsyncError(async (req, res) => {
+
+  res.clearCookie('token');
+  res.json({message: 'Succesfully signout'})
+
+});
