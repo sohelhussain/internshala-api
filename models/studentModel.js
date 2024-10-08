@@ -16,15 +16,19 @@ const studentSchema = new mongoose.Schema(
         minLength: [5,"Password must be at least 5 characters"],
         // match:[]
     },
+    resetPasswordToken: {
+      type: String,
+      default: "0",
+    },
   },
   { timestamps: true }
 );
 
 studentSchema.pre("save", function () {
-  if(!this.isModified()) {
+  if(!this.isModified("password")) {
     return;
   }
-  const salt = bcrypt.genSaltSync(10)
+  let salt = bcrypt.genSaltSync(10)
   this.password = bcrypt.hashSync(this.password, salt)
 })
 
@@ -32,9 +36,14 @@ studentSchema.methods.comparePassword = function(password){
   return bcrypt.compareSync(password, this.password)
 }
 
-studentSchema.methods.getjwttoken = () => {
-  return jwt.sign({id: this._id}, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE})
-}
+
+//! don't use arrow function
+
+studentSchema.methods.getjwttoken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
+};
 
 const studentModel = mongoose.model("student", studentSchema);
 
