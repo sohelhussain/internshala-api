@@ -7,6 +7,11 @@ exports.homePage = catchAsyncError(async (req, res) => {
   res.json({ message: "this is homePage test" });
 });
 
+exports.currentStudent = catchAsyncError(async (req, res) => {
+  const student = await studentModel.findOne(req.id).select("+password").exec();
+  res.json(student);
+});
+
 exports.studentSignup = catchAsyncError(async (req, res) => {
   //   const student = await studentModel.create({
   //     email: req.body.email,
@@ -16,7 +21,7 @@ exports.studentSignup = catchAsyncError(async (req, res) => {
   sendtoken(student, 201, res);
 });
 
-exports.studentSignin = catchAsyncError(async (req, res) => {
+exports.studentSignin = catchAsyncError(async (req, res, next) => {
   const student = await studentModel.findOne({ email: req.body.email }).select("+password").exec();
   if (!student)
     return next(
@@ -25,6 +30,7 @@ exports.studentSignin = catchAsyncError(async (req, res) => {
   const isMatch = student.comparePassword(req.body.password);
   if (!isMatch) return next(new ErrorHandler("wrong password", 404));
   sendtoken(student, 201, res);
+
 });
 
 exports.studentSignout = catchAsyncError(async (req, res) => {
