@@ -25,6 +25,10 @@ app.use(expressSession({
 app.use(cookieParser());
 
 
+//express-file upload
+const fileUpload = require("express-fileupload");
+app.use(fileUpload())
+
 const { generatedError } = require("./middlewares/error");
 
 
