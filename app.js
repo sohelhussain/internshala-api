@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const indexRouter = require("./router/indexRouter");
 const resumeRouter = require("./router/resumeRouter");
+const employeeRouter = require("./router/employeeRouter");
 const app = express();
 const expressSession = require("express-session");
 const cookieParser = require("cookie-parser");
@@ -36,6 +37,7 @@ const { generatedError } = require("./middlewares/error");
 //routes
 app.use("/", indexRouter);
 app.use("/resume", resumeRouter);
+app.use("/employee", employeeRouter);
 app.all("*", (req, res, next) => {
   next(new ErrorHandler(`request url not found: ${req.url}`), 404);
 });
