@@ -61,6 +61,10 @@ const studentSchema = new mongoose.Schema(
       skills: [],
       accomplishments: [],
     },
+    internships: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "internship" },
+  ],
+  jobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "job" }],
   },
   { timestamps: true }
 );
