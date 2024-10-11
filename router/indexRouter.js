@@ -10,6 +10,8 @@ const {
   studentresetpassword,
   studentupdate,
   studentavatar,
+  applyinternship,
+  applyjob,
 } = require("../controllers/indexController");
 const router = express.Router();
 
@@ -26,5 +28,20 @@ router.post("/student/forgot-password-link/:studentId", studentforgetlink);
 router.post("/student/reset-password/:studentId", isAuthenticated, studentresetpassword);
 router.post("/student/student-update", isAuthenticated, studentupdate)
 router.post("/student/student-avatar", isAuthenticated, studentavatar)
+
+
+
+// apply internships
+router.post("/student/apply-internship/:internshipId", isAuthenticated, applyinternship)
+
+
+
+
+// apply jobs 
+router.post("/student/apply-job/:jobId", isAuthenticated, applyjob)
+
+
+
+
 
 module.exports = router;

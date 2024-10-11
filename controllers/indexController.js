@@ -1,5 +1,7 @@
 const { catchAsyncError } = require("../middlewares/catchAsyncErrors");
 const studentModel = require("../models/studentModel");
+const internshipModel = require("../models/internshipModel");
+const jobModel = require("../models/jobModel");
 const ErrorHandler = require("../utils/ErrorHandler");
 const { sendmail } = require("../utils/nodemailer");
 const { sendtoken } = require("../utils/sendToken");
@@ -114,3 +116,39 @@ if(student.avatar.fileId !== ""){
   
   res.status(200).json({success: true, message: "avatar set successfully"});
 });
+
+
+
+// apply internships
+
+exports.applyinternship = catchAsyncError(async (req, res, next) => {
+  const student = await studentModel.findById(req.id);
+  const internship = await internshipModel.findById(req.params.internshipId).exec();
+   
+  student.internships.push(internship._id);
+  internship.students.push(student._id);
+
+  await student.save();
+  await internship.save();
+
+
+  res.json({student, internship})
+})
+
+
+
+
+// apply jobs
+exports.applyjob = catchAsyncError(async (req, res, next) => {
+  const student = await studentModel.findById(req.id);
+  const job = await jobModel.findById(req.params.jobId).exec();
+   
+  student.internships.push(job._id);
+  job.students.push(student._id);
+
+  await student.save();
+  await job.save();
+
+
+  res.json({student, job});
+})
